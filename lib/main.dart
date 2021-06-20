@@ -548,6 +548,27 @@ class QuizPage extends StatefulWidget {
 }
 
 class _QuizPageState extends State<QuizPage> {
+  List<Icon> scoreKeeper = [];
+  void checkAnswer(bool userPickedAnswer) {
+    bool correctAnswer = quizBrain.getQuestionAnswer();
+    setState(() {
+      if (userPickedAnswer == correctAnswer) {
+        print('user got it right!');
+        scoreKeeper.add(Icon(
+          Icons.check,
+          color: Colors.green,
+        ));
+      } else {
+        print('user got it wrong');
+        scoreKeeper.add(Icon(
+          Icons.close,
+          color: Colors.red,
+        ));
+      }
+      quizBrain.nextQuestion();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -578,15 +599,7 @@ class _QuizPageState extends State<QuizPage> {
                 color: Colors.green,
                 padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 20.0),
                 onPressed: () {
-                  bool correctAnswer = quizBrain.getQuestionAnswer();
-                  if (correctAnswer == true) {
-                    print('user got it right!');
-                  } else {
-                    print('user got it wrong');
-                  }
-                  setState(() {
-                    quizBrain.nextQuestion();
-                  });
+                  checkAnswer(true);
                 },
                 child: Text(
                   'True',
@@ -600,15 +613,7 @@ class _QuizPageState extends State<QuizPage> {
             child: FlatButton(
               color: Colors.red,
               onPressed: () {
-                bool correctAnswer = quizBrain.getQuestionAnswer();
-                if (correctAnswer == false) {
-                  print('user got it right!');
-                } else {
-                  print('user got it wrong');
-                }
-                setState(() {
-                  quizBrain.nextQuestion();
-                });
+                checkAnswer(false);
               },
               child: Text(
                 'False',
@@ -620,6 +625,11 @@ class _QuizPageState extends State<QuizPage> {
             ),
           ),
         ),
+        Expanded(
+          child: Row(
+            children: scoreKeeper,
+          ),
+        )
       ],
     );
   }
