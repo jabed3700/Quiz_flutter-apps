@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'quiz_brain.dart';
+
 QuizBrain quizBrain = QuizBrain();
 
 void main() {
@@ -260,7 +261,6 @@ void main() {
 //     );
 //   }
 // }
-
 
 // Checking user answers (5)
 // class QuizPage extends StatefulWidget {
@@ -538,7 +538,6 @@ void main() {
 //   }
 // }
 
-
 // Abstraction in action
 // Creating a question class (8)
 class QuizPage extends StatefulWidget {
@@ -549,47 +548,6 @@ class QuizPage extends StatefulWidget {
 }
 
 class _QuizPageState extends State<QuizPage> {
-  List<Icon> scoreKeeper = [
-    // Icon(
-    //   Icons.check,
-    //   color: Colors.green,
-    // ),
-    // Icon(
-    //   Icons.close,
-    //   color: Colors.red,
-    // ),
-    // Icon(
-    //   Icons.close,
-    //   color: Colors.red,
-    // ),
-    // Icon(
-    //   Icons.close,
-    //   color: Colors.red,
-    // ),
-    // Icon(
-    //   Icons.check,
-    //   color: Colors.green,
-    // ),
-  ];
-
-  // List<String> questions = [
-  //   'You can lead a cow down stairs but not up stairs',
-  //   'Approximately one quarter of human bones are in the feet.',
-  //   'A slug\'s blood is green.'
-  // ];
-  //
-  // List<bool> answers = [false,true, true,];
-  //
-  // Question q1 = Question(q : 'You can lead a cow down stairs but not up stairs.', a:false);
-
-  // List<Question> questionBank = [
-  //   Question(q: 'You can lead a cow down stairs but not up stairs', a:false),
-  //   Question(q: 'Approximately one quarter of human bones are in the feet.', a:true),
-  //   Question(q: 'A slug\'s blood is green.',a:true),
-  // ];
-
-  int questionNumber = 0;
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -603,7 +561,7 @@ class _QuizPageState extends State<QuizPage> {
             child: Center(
               child: Text(
                 // questions[2],
-                quizBrain.questionBank[questionNumber].questionText,
+                quizBrain.getQuestionText(),
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.white,
@@ -620,16 +578,15 @@ class _QuizPageState extends State<QuizPage> {
                 color: Colors.green,
                 padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 20.0),
                 onPressed: () {
-                  bool correctAnswer = quizBrain.questionBank[questionNumber].questionAnswer;
-                  if(correctAnswer == true){
+                  bool correctAnswer = quizBrain.getQuestionAnswer();
+                  if (correctAnswer == true) {
                     print('user got it right!');
-                  }else{
+                  } else {
                     print('user got it wrong');
                   }
                   setState(() {
-                    questionNumber++;
+                    quizBrain.nextQuestion();
                   });
-                  print(questionNumber);
                 },
                 child: Text(
                   'True',
@@ -643,24 +600,15 @@ class _QuizPageState extends State<QuizPage> {
             child: FlatButton(
               color: Colors.red,
               onPressed: () {
-                bool correctAnswer = quizBrain.questionBank[questionNumber].questionAnswer;
-                if(correctAnswer == false){
+                bool correctAnswer = quizBrain.getQuestionAnswer();
+                if (correctAnswer == false) {
                   print('user got it right!');
-                }else{
+                } else {
                   print('user got it wrong');
                 }
                 setState(() {
-                  questionNumber++;
+                  quizBrain.nextQuestion();
                 });
-                print(questionNumber);
-                // setState(() {
-                //   scoreKeeper.add(
-                //     Icon(
-                //       Icons.close,
-                //       color: Colors.red,
-                //     ),
-                //   );
-                // });
               },
               child: Text(
                 'False',
@@ -672,9 +620,6 @@ class _QuizPageState extends State<QuizPage> {
             ),
           ),
         ),
-        Row(
-          children: scoreKeeper,
-        )
       ],
     );
   }
